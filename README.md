@@ -16,6 +16,7 @@
     - SecurityConfig(Spring Security 설정)
     - Jwt (토큰 정보)
     - JwtAuthenticationFilter (토큰 인증 필터)
+      - Token 만료 여부 추가
     - JwtProvider (토큰 생성, 토큰 정보)
 
 ### CRUD API
@@ -32,5 +33,7 @@
 
 ## 개선 필요한 점
 - 토큰이 만료되었을 때 refreshToken을 확인하여 accessToken 재발급
+  - refreshToken 재발급은 API 새로 만들어서 해주는게 나을 것 같은데 로직은 어떻게 하지?
+  - 흠..................
 - Test Code 추가 필요
 - 다양한 Exception을 Handling할 수 있도록 개선 필요

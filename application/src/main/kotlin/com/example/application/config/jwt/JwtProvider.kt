@@ -98,11 +98,11 @@ class JwtProvider(@Value("\${jwt.secret-key}") secretKey: String) {
                 .parseClaimsJws(token)
             return true
         } catch (e: SecurityException) {
-            log.info("Invalid JWT Token", e)
+            log.info("Invalid JWT", e)
         } catch (e: MalformedJwtException) {
-            log.info("Invalid JWT Token", e)
+            log.info("Invalid JWT", e)
         } catch (e: ExpiredJwtException) {
-            log.info("Expired JWT Token", e)
+            log.info("Expired JWT", e)
         } catch (e: UnsupportedJwtException) {
             log.info("Unsupported JWT Token", e)
         } catch (e: IllegalArgumentException) {
@@ -111,6 +111,30 @@ class JwtProvider(@Value("\${jwt.secret-key}") secretKey: String) {
         return false
     }
 
+    /**
+     * Jwt AccessToken 만료 여부
+     *
+     * @param token 토큰
+     * @return 토큰 만료 여부
+     */
+    fun isExpired(token: String?): Boolean {
+        val claims = parseClaims(token)
+        val expiration = claims.expiration ?: throw UnauthorizedException(ErrorCode.UNAUTHORIZED_ERROR)
+        return Date() > expiration
+    }
+
+    /**
+     * Jwt Refresh Token 여부
+     *
+     * @param token 토큰
+     * @return 토큰 만료 여부
+     */
+    fun isRefreshToken(refreshToken: String, key: Key): Boolean {
+        return Jwts.parserBuilder()
+            .setSigningKey(key)
+            .build()
+            .isSigned(refreshToken)
+    }
 
     /**
      * accessToken 복호화

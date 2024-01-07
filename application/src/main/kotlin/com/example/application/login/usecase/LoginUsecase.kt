@@ -38,4 +38,22 @@ class LoginUsecase(
         val authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken)
         return jwtProvider.generateToken(authentication)
     }
+
+    /**
+     * 로그인
+     *
+     * 1. email, password 검증
+     * 2. email, password로 Authentication 객체 생성
+     * 3. JWT 생성
+     */
+    fun expendToken(request: LoginRequest): Jwt {
+        val memberResult: MemberResult = memberService.getMemberByEmail(request.email)
+        if (!passwordEncoder.matches(request.password, memberResult.password)) {
+            throw InvalidInputException(ErrorCode.UNAUTHORIZED_ERROR)
+        }
+
+        val authenticationToken = UsernamePasswordAuthenticationToken(request.email, memberResult.password)
+        val authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken)
+        return jwtProvider.generateToken(authentication)
+    }
 }

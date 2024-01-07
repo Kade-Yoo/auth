@@ -5,4 +5,5 @@ open class BusinessException(
 ) : RuntimeException(errorCode.message)
 
 class UnauthorizedException(errorCode: ErrorCode) : BusinessException(errorCode)
+class AuthorizationExpiredException(errorCode: ErrorCode) : BusinessException(errorCode)
 class InvalidInputException(errorCode: ErrorCode) : BusinessException(errorCode)
