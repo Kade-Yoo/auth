@@ -1,11 +1,7 @@
 package com.example.application.join.usecase
 
 import com.example.application.join.dto.JoinRequest
-import com.example.domain.common.ErrorCode
-import com.example.domain.common.InvalidInputException
-import com.example.domain.member.dto.JoinCommand
 import com.example.domain.member.service.MemberService
-import jakarta.validation.constraints.Email
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 

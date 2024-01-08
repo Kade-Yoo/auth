@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 /**
@@ -30,4 +29,13 @@ class LoginController(
      */
     @PostMapping("/login")
     fun login(@RequestBody request: LoginRequest) : ResponseEntity<Jwt> = ResponseEntity.ok(loginUsecase.login(request))
+//
+//    /**
+//     * 토큰 갱신 API
+//     *
+//     * @param request 로그인 정보
+//     */
+//    @PostMapping("/expand-token")
+//    fun expendToken(@RequestHeader("Authorization_Refresh") refreshToken: String?, @RequestBody request: LoginRequest) : ResponseEntity<Jwt> =
+//        ResponseEntity.ok(loginUsecase.expendToken(refreshToken, request))
 }
