@@ -3,6 +3,10 @@
 ## 환경
 - Spring Boot 3.2.1
 - Kotlin 1.9.21
+- Micrometer
+  - tracing brave 1.2.1
+  - zipkin 2.16.3
+- spring-boot-actuator 3.2.1
 - ORM(JPA)
 - 인증(Spring Security + JWT)
 
@@ -37,3 +41,8 @@
   - 흠..................
 - Test Code 추가 필요
 - 다양한 Exception을 Handling할 수 있도록 개선 필요
+
+## Tracing
+- Micrometer 
+- Actuator
+- Zipkin(우선 local docker에 설치 추후 dockerFile 생성하여 프로젝트 실행 시 설치)

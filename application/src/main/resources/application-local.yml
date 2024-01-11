@@ -1,2 +1,17 @@
 jwt:
   secret-key: 2f3bc9dffa3b6fccdfc48a7b1e1cc767fc4825eea40a89bf7c94325f5daf253a
+
+logging:
+  pattern:
+    level: "%5p [%X{traceId},%X{spanId}]"
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+    propagation:
+      consume: b3
+      produce: b3_multi
+    enabled: true
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans

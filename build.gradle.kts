@@ -8,7 +8,6 @@ plugins {
     kotlin("plugin.jpa") version "1.9.21" apply false
 }
 
-
 allprojects {
     group = "com.example.auth"
     version = "0.0.1-SNAPSHOT"
@@ -19,6 +18,7 @@ allprojects {
 }
 
 subprojects {
+
     apply {
         plugin("kotlin")
         plugin("org.jetbrains.kotlin.jvm")
@@ -31,6 +31,9 @@ subprojects {
         implementation(kotlin("reflect"))
         implementation(kotlin("stdlib"))
         testImplementation("org.springframework.boot:spring-boot-starter-test")
+        implementation("org.springframework.boot:spring-boot-starter-actuator")
+        implementation("io.micrometer:micrometer-tracing-bridge-brave")
+        implementation("io.zipkin.reporter2:zipkin-reporter-brave")
     }
 
     tasks.withType<KotlinCompile> {

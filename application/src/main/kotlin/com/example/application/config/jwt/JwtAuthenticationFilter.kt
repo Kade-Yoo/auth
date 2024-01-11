@@ -6,18 +6,15 @@ import com.example.application.config.constants.Constants.Companion.REFRESH_AUTH
 import com.example.application.config.constants.Constants.Companion.TOKEN_START_INDEX
 import com.example.domain.common.AuthorizationExpiredException
 import com.example.domain.common.ErrorCode
-import io.jsonwebtoken.ExpiredJwtException
 import jakarta.servlet.FilterChain
 import jakarta.servlet.ServletRequest
 import jakarta.servlet.ServletResponse
-import jakarta.servlet.annotation.WebFilter
 import jakarta.servlet.http.HttpServletRequest
-import java.security.Key
+import java.util.*
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.util.StringUtils
 import org.springframework.web.filter.GenericFilterBean
-import java.util.*
 
 class JwtAuthenticationFilter(
     private val jwtProvider: JwtProvider,
