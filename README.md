@@ -22,6 +22,11 @@
     - JwtAuthenticationFilter (토큰 인증 필터)
       - Token 만료 여부 추가
     - JwtProvider (토큰 생성, 토큰 정보)
+    - UserDetailsService
+      - Security책을 보며 연습하기 위해 CustomUserDetailsService를 제거하고 UserDetailsService 빈 등록을 해주었는데 왜안되는걸까?
+        - UserDetailsService 빈 등록한 로직에 User를 등록하는 내용이 있어 해당 User로 인증을 받고 로그인하게 되면 정상 동작한다.
+    - CustomAuthenticationProvider
+      - AuthenticationProvider를 HttpSecurity에 등록할 수 있다 JwtProvider와 어떤 점이 다른지 확인해보면서 구성하는 방법을 찾아보자
 
 ### CRUD API
 - 인증 로직을 구현하여 CRUD API는 회원과 관련된 API로 작성
@@ -46,3 +51,4 @@
 - Micrometer 
 - Actuator
 - Zipkin(우선 local docker에 설치 추후 dockerFile 생성하여 프로젝트 실행 시 설치)
+  - AsyncReporter를 이용해서 오류가 떨어져도 기존 로직에 영향이 없다

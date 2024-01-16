@@ -15,6 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 class SecurityConfig(
     private val jwtProvider: JwtProvider,
+    private val customAuthenticationProvider: CustomAuthenticationProvider,
 ) {
     @Bean
     @Throws(Exception::class)
@@ -39,6 +40,8 @@ class SecurityConfig(
                 JwtAuthenticationFilter(jwtProvider),
                 UsernamePasswordAuthenticationFilter::class.java
             )
+            // Custom Provider 등록
+            .authenticationProvider(customAuthenticationProvider)
             .build()
     }
 }
