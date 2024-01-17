@@ -2,11 +2,14 @@ package com.example.application.config.security
 
 import com.example.application.config.jwt.JwtAuthenticationFilter
 import com.example.application.config.jwt.JwtProvider
+import javax.sql.DataSource
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.core.userdetails.UserDetailsService
+import org.springframework.security.provisioning.JdbcUserDetailsManager
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
@@ -15,7 +18,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 class SecurityConfig(
     private val jwtProvider: JwtProvider,
-    private val customAuthenticationProvider: CustomAuthenticationProvider,
+//    private val customAuthenticationProvider: CustomAuthenticationProvider,
+    private val dataSource: DataSource
 ) {
     @Bean
     @Throws(Exception::class)
@@ -41,7 +45,24 @@ class SecurityConfig(
                 UsernamePasswordAuthenticationFilter::class.java
             )
             // Custom Provider 등록
-            .authenticationProvider(customAuthenticationProvider)
+//            .authenticationProvider(customAuthenticationProvider)
             .build()
+    }
+
+    @Bean("userDetailsService")
+    fun userDetailsService() : UserDetailsService {
+        val jdbcUserDetailsManager = JdbcUserDetailsManager(dataSource)
+        jdbcUserDetailsManager.usersByUsernameQuery = (
+                "select email,password,enabled "
+                + "from member "
+                + "where email = ?"
+                )
+        jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
+            "select m.email,role "
+                    + "from member_role mr "
+                    + "inner join member m on mr.member_id = m.member_id "
+                    + "where m.email = ?")
+
+        return jdbcUserDetailsManager
     }
 }

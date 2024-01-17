@@ -17,6 +17,9 @@ class Member private constructor(
 
     @Column(columnDefinition = "varchar", nullable = false)
     var password: String,
+
+    @Column(columnDefinition = "bool", nullable = false)
+    var enabled: Boolean
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,7 +41,8 @@ class Member private constructor(
         ): Member {
             return Member(
                 email,
-                password
+                password,
+                enabled = true
             )
         }
     }

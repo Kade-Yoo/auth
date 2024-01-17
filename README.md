@@ -22,9 +22,23 @@
     - JwtAuthenticationFilter (토큰 인증 필터)
       - Token 만료 여부 추가
     - JwtProvider (토큰 생성, 토큰 정보)
-    - UserDetailsService
+    - UserDetailsService -> JdbcUserDetailsManager(DB로 User정보 관리), LdapUserDetailsManager를 통해 구현될 수 있다 
       - Security책을 보며 연습하기 위해 CustomUserDetailsService를 제거하고 UserDetailsService 빈 등록을 해주었는데 왜안되는걸까?
         - UserDetailsService 빈 등록한 로직에 User를 등록하는 내용이 있어 해당 User로 인증을 받고 로그인하게 되면 정상 동작한다.
+      - UserDetails(loadUserByUsername 메소드를 통해 반환됨)
+        - GrantedAuthority
+            - SimpleGrantedAuthority : User의 roles을 지정해줄 때 사용하는 클래스
+            - SwitchUserGrantedAuthority : 인증 성공한 사용자와 변경을 하기 위한 클래스
+      - JdbcUserDetailsManager
+        - Table과 Column을 Custom하게 사용하기 위해선 usersByUsernameQuery, authoritiesByUsernameQuery를 수정해서 사용해야 하며,
+        - 기존 정의되어 있는 쿼리대로 컬럼 위치와 갯수를 맞춰줘야 재정의한 쿼리로 정상 동작한다
+        - 근데 다시 보니 protected로 되어 있어서 override해서 사용하면 Table,Column도 내가 원하는대로 변경해서 사용할 수 있을 것 같다.
+        - 기존 정의되어 있는 로직에 종속적이게 개발할 수 밖에 없어보여 Custom클래스를 새로 만들어서 사용하는게 편해보인다.
+        ```java
+            protected List<UserDetails> loadUsersByUsername(String username) {
+		        return getJdbcTemplate().query(getUsersByUsernameQuery(), this::mapToUser, username);
+            }
+        ```
     - CustomAuthenticationProvider
       - AuthenticationProvider를 HttpSecurity에 등록할 수 있다 JwtProvider와 어떤 점이 다른지 확인해보면서 구성하는 방법을 찾아보자
 
