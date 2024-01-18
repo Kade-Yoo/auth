@@ -34,6 +34,7 @@
         - 기존 정의되어 있는 쿼리대로 컬럼 위치와 갯수를 맞춰줘야 재정의한 쿼리로 정상 동작한다
         - 근데 다시 보니 protected로 되어 있어서 override해서 사용하면 Table,Column도 내가 원하는대로 변경해서 사용할 수 있을 것 같다.
         - 기존 정의되어 있는 로직에 종속적이게 개발할 수 밖에 없어보여 Custom클래스를 새로 만들어서 사용하는게 편해보인다.
+        - **JdbcUserDetailsManager를 상속받아서 dataSource셋팅해주고 사용하면 Custom하게 사용할 수 있다**
         ```java
             protected List<UserDetails> loadUsersByUsername(String username) {
 		        return getJdbcTemplate().query(getUsersByUsernameQuery(), this::mapToUser, username);

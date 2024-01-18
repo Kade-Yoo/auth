@@ -48,21 +48,4 @@ class SecurityConfig(
 //            .authenticationProvider(customAuthenticationProvider)
             .build()
     }
-
-    @Bean("userDetailsService")
-    fun userDetailsService() : UserDetailsService {
-        val jdbcUserDetailsManager = JdbcUserDetailsManager(dataSource)
-        jdbcUserDetailsManager.usersByUsernameQuery = (
-                "select email,password,enabled "
-                + "from member "
-                + "where email = ?"
-                )
-        jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
-            "select m.email,role "
-                    + "from member_role mr "
-                    + "inner join member m on mr.member_id = m.member_id "
-                    + "where m.email = ?")
-
-        return jdbcUserDetailsManager
-    }
 }
