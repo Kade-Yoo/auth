@@ -8,8 +8,11 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.provisioning.JdbcUserDetailsManager
 import org.springframework.stereotype.Service
 
-@Service
-class CustomUserDetailsService(
+/**
+ * DB를 사용할 때 이용하는 UserDetailsService
+ */
+//@Service
+class JdbcCustomUserDetailsService(
     private val memberService: MemberService,
     private val passwordEncoder: PasswordEncoder,
     dataSource: DataSource) : JdbcUserDetailsManager(dataSource) {

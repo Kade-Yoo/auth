@@ -20,7 +20,7 @@ class LoginController(
      * 로그아웃 성공 후 Get Method 오류 방지를 위한 로그인
      */
     @GetMapping("/login")
-    fun loginPage() : ResponseEntity<Void> = ResponseEntity.ok().build()
+    fun loginPage() : String = "Test"
 
     /**
      * 로그인 API
@@ -29,6 +29,9 @@ class LoginController(
      */
     @PostMapping("/login")
     fun login(@RequestBody request: LoginRequest) : ResponseEntity<Jwt> = ResponseEntity.ok(loginUsecase.login(request))
+
+    @GetMapping("/")
+    fun main() = "Ldap Testing"
 //
 //    /**
 //     * 토큰 갱신 API
