@@ -2,11 +2,18 @@ package com.example.application.config.security
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Configuration
+import org.springframework.ldap.core.ContextSource
+import org.springframework.ldap.core.support.BaseLdapPathContextSource
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.ldap.search.FilterBasedLdapUserSearch
+import org.springframework.security.ldap.userdetails.DefaultLdapAuthoritiesPopulator
+import org.springframework.security.ldap.userdetails.LdapUserDetailsMapper
 
 @Configuration
-class LdapSecurityConfig {
+class LdapSecurityConfig(
+    private val contextSource: BaseLdapPathContextSource
+) {
 
     /**
      * Ldap 서버에 접속하기 위한 정보
@@ -20,6 +27,9 @@ class LdapSecurityConfig {
     fun configure(auth: AuthenticationManagerBuilder) {
         auth
             .ldapAuthentication()
+            .ldapAuthoritiesPopulator(authoritiesPopulator())
+            .contextSource(contextSource)
+            .userDetailsContextMapper(userDetailsMapper())
             .contextSource()
             // 내장 ldap을 사용하지 않을 때 사용할 ldap 서버 url
             .url("ldap://localhost:8389/dc=springframework,dc=org")
@@ -36,4 +46,9 @@ class LdapSecurityConfig {
             // 디렉토리의 비밀번호 속성
             .passwordAttribute("userPassword")
     }
+
+    fun authoritiesPopulator() : DefaultLdapAuthoritiesPopulator =
+        DefaultLdapAuthoritiesPopulator(contextSource, "ou=groups")
+
+    fun userDetailsMapper() : LdapUserDetailsMapper = LdapUserDetailsMapper()
 }

@@ -40,7 +40,13 @@
 		        return getJdbcTemplate().query(getUsersByUsernameQuery(), this::mapToUser, username);
             }
         ```
-    - CustomAuthenticationProvider
+      - LdapUserDetailsManager
+        - Ldap서버와 통신을 통해 Ldap서버에 저장되어 있는 데이터를 이용해 인증 처리를 하는 방식
+        - Ldap인증 방식은 AuthenticationFilter -> ProviderManager -> AbstractLdapAuthenticationProvider -> LdapUserDetailsMapper 순서로 동작한다.
+        - UserDetailsService를 통해 UserDetails를 가져오는것이 아닌 LdapUserDetailsMapper를 통해 가져온다.
+        - 그리고 Authority정보는 LdapAuthoritiesPopulator를 통해서 가져온다.
+        - Ldap Security를 Custom하게 만들기 위해선 Manager, Provider, Mapper, Populator 클래스를 상속받아 메소드를 재정의해야 할 것 같다.
+    - CustaomAuthenticationProvider
       - AuthenticationProvider를 HttpSecurity에 등록할 수 있다 JwtProvider와 어떤 점이 다른지 확인해보면서 구성하는 방법을 찾아보자
 
 ### CRUD API
